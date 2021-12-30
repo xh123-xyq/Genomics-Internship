@@ -11,7 +11,9 @@
 
 ### 1.2 对蛋白序列进行两两比对
 在做diamond之前需要改一下序列名，在各自序列名后面加上GCF编号，如将`WP_003333770.1`改成`WP_003333770.1:GCF_000010165`，将所有蛋白序列合并到一个文件`all_pro.faa`。改完序列名之后的情况类似于下图
-![image](https://user-images.githubusercontent.com/71910521/147723487-544bac71-c78d-4408-88d4-525591577f62.png)
+![image](https://user-images.githubusercontent.com/71910521/147732367-67f4e55d-eff2-427c-9fc9-f31ca1087421.png)
+
+
 改序列名有利于之后分辨获得正确的单拷贝基因家族。
 * 首先先对蛋白质序列进行建库，`diamond makedb --in all_pro.faa -d allpep`，然后用diamond进行两两比对  
 
@@ -92,7 +94,7 @@ dump.data.mci.I-20，如上图一行为一个单拷贝基因家族一共72行
 
 dump.data.mci.I-40，如上图
 ## 2.构建物种进化树
-### 2.1 提取单拷贝基因家族的基因序列 
+### 2.1 提取单拷贝基因家族的基因序列 （运行时间会稍长一点）
 根据需求得出如下代码
 ```python
 def extract(filename1,filename2,prefix,suffix):#提取单序列家族序列
@@ -133,7 +135,7 @@ extract(d,a,prefix,suffix)
 ```
 会得到等于单拷贝基因家族数的序列文件。
 例：I40的家族成员序列文件
-![image](https://user-images.githubusercontent.com/71910521/147728152-a52ab908-4335-46d0-b86f-9d270c80189f.png)
+![image](https://user-images.githubusercontent.com/71910521/147732462-ab304d5b-d16b-4c57-a854-15de074bc07c.png)
 
 
 注：为什么要选择单拷贝基因？
@@ -167,16 +169,17 @@ for file in $(ls $dir | grep .${oldsuffix}) #构建循环
     done
 echo ${str}
 ```
-I20的多序列比对后的结果文件数量
-![image](https://user-images.githubusercontent.com/71910521/147729055-6cad902c-5e80-4c52-bf6e-3c686bf41606.png)
+I20的多序列比对后的结果文件数量（72个）
 
+![image](https://user-images.githubusercontent.com/71910521/147732608-46cc4f5d-8928-452d-a407-a1cf72ab0741.png)
 
 文件内容（只取了其中一个），经过多序列比对之后会将不等长的序列使用gap填充，使之等长。
 ![image](https://user-images.githubusercontent.com/71910521/147729214-df61789e-fd85-45b7-bd8f-2c0c13d35fee.png)
 
 
-I40的多序列比对后的结果文件数量
-![image](https://user-images.githubusercontent.com/71910521/147730200-54c0769b-6a17-467a-ad6b-10733fb5bf98.png)
+I40的多序列比对后的结果文件数量(21个)
+
+![image](https://user-images.githubusercontent.com/71910521/147732688-00d1fa6b-fc59-4590-8cd1-dff43fe92448.png)
 
 
 文件内容
