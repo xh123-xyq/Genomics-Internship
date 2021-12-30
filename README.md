@@ -144,6 +144,22 @@ extract(d,a,prefix,suffix)
 2.减少旁系同源基因对序列比对和后来进化树的影响。
 
 ### 2.2 多序列比对
+关于muscle在Linux上的下载
+#wget http://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86linux64.tar.gz
+
+#tar -zxvf muscle3.8.31_i86linux64.tar.gz
+
+#chmod +x muscle3.8.31_i86linux64
+
+#mv muscle3.8.31_i86linux64 muscle
+
+![image](https://user-images.githubusercontent.com/71443958/147737891-b74889ac-032b-462f-9b8e-c9ccff279a14.png)
+
+
+#export PATH=/data/stdata/genomic/bioinfo2019/201941632216/inter/muscle:$PATH
+
+#./muscle#使用muscle
+
 使用shell脚本建立一个循环,对每个单拷贝基因家族进行多序列比对
 ```sh
 #!/bin/bash
@@ -165,7 +181,13 @@ for file in $(ls $dir | grep .${oldsuffix}) #构建循环
         ./muscle -in ${file} -out ${name}.${newsuffix} #muscle运行多序列比对
 	echo ${name}-${str}
 	rm ${name}.${oldsuffix}
-	tar -crf ${name:0:3}.${pack} ls*.{newsuffix} #打包文件
+	if [ ! -f "/data/stdata/genomic/bioinfo2019/201941632216/inter/excel/${name:0:3}.${pack}" ];then #判断文件是否存在
+                tar -cf ${name:0:3}.${pack} ls*.${newsuffix} #若文件不存在则创建压缩包
+        else
+                echo "文件存在"
+        fi
+	tar -crf ${name:0:3}.${pack} ls*.{newsuffix} #打包文件,将单个文件压缩进压缩包
+	rm -rf ${name}.${newsuffix} #删除多序列比对多余结果
     done
 echo ${str}
 ```
